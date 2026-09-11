@@ -7,10 +7,6 @@
     ? new Vimeo.Player(vimeoFrame)
     : null;
 
-  const checkoutModal = document.getElementById('checkout-modal');
-  const checkoutModalClose = document.getElementById('checkout-modal-close');
-
-
   /* =========================
      VIDEO
   ========================= */
@@ -41,115 +37,6 @@
     });
 
   }
-
-
-  /* =========================
-     MODAL CHECKOUT
-  ========================= */
-
-  function openCheckoutModal() {
-
-    if (!checkoutModal) return;
-
-    checkoutModal.classList.add('is-open');
-    checkoutModal.setAttribute('aria-hidden', 'false');
-
-    document.body.style.overflow = 'hidden';
-
-  }
-
-
-  function closeCheckoutModal() {
-
-    if (!checkoutModal) return;
-
-    checkoutModal.classList.remove('is-open');
-    checkoutModal.setAttribute('aria-hidden', 'true');
-
-    document.body.style.overflow = '';
-
-  }
-
-
-  /*
-    TODOS LOS BOTONES DE COMPRA
-    ABREN EL MODAL
-  */
-
-  document.querySelectorAll(
-  'a.checkout-link:not(.checkout-option), a[href*="pay.hotmart.com"]:not(.checkout-option)'
-).forEach((link) => {
-
-    link.addEventListener('click', (event) => {
-
-      event.preventDefault();
-
-      if (window.fbq) {
-        fbq('trackCustom', 'CheckoutClick');
-      }
-
-      openCheckoutModal();
-
-    });
-
-  });
-
-
-  /*
-    CERRAR CON LA X
-  */
-
-  if (checkoutModalClose) {
-
-    checkoutModalClose.addEventListener('click', () => {
-      closeCheckoutModal();
-    });
-
-  }
-
-
-  /*
-    CERRAR TOCANDO FUERA
-  */
-
-  if (checkoutModal) {
-
-    checkoutModal.addEventListener('click', (event) => {
-
-      if (event.target === checkoutModal) {
-        closeCheckoutModal();
-      }
-
-    });
-
-  }
-
-
-  /*
-    EVENTO META PIXEL
-    CUANDO ELIGE PAÍS
-  */
-
-  document.querySelectorAll('.checkout-option').forEach((option) => {
-
-    option.addEventListener('click', () => {
-
-      if (window.fbq) {
-
-        const country =
-          option.classList.contains('checkout-option-ar')
-            ? 'AR'
-            : 'OTHER';
-
-        fbq('trackCustom', 'CheckoutCountrySelected', {
-          country
-        });
-
-      }
-
-    });
-
-  });
 
 
   /* =========================
